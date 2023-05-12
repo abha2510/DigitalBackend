@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors()); 
 
 app.get("/",(req,res)=>{
-    res.send("Welcome!")
+    res.send("Welcome to my Backend!")
 })
 
 app.use("/users",userRouter);
