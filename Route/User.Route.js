@@ -10,11 +10,12 @@ userRouter.get("/", async (req, res) => {
 
 userRouter.post("/register", async (req, res) => {
   const { name, password, email } = req.body;
-  try {
-    if (name && password && email) {
+  try { 
+    let isPresent = await Usermodel.find({email}); 
+    if (name && password && email && isPresent.length==0) {
       bcrypt.hash(password, 7, async (err, hash_pass) => {
         if (err) {
-          console.log(err);
+          console.log(err); 
         } else {
           const user = new Usermodel({
             name,
