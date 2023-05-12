@@ -2,9 +2,23 @@ const express = require("express");
 const { CartModel } = require("../Model/Cart.Model");
 const cartRouter = express.Router();
 
-cartRouter.get("/", async (req, res) => {   
-  let cart = await CartModel.find(req.body); 
-  res.send(cart);
+cartRouter.get("/", async (req, res) => {
+    try{
+        let {userId} = req.body;
+        let cart = await CartModel.find();
+        if(userId){
+            cart = cart.filter((e) => {
+              if (e.userId == userId) {
+                return e;
+              }
+            });
+        }
+        console.log(userId); 
+        res.send(cart);
+    }
+    catch(err){
+        res.send({message: "Error"}); 
+    }
 });
 
 cartRouter.post("/add", async (req, res) => {
@@ -13,7 +27,7 @@ cartRouter.post("/add", async (req, res) => {
     let cartItem = await CartModel(data);
     await cartItem.save();
     res.send({ msg: "Data saved successfully", sucess: 0 });
-  } catch (error) { 
+  } catch (error) {
     console.log(error.message);
     res.send({ msg: "Error saving", sucess: 1 });
   }
