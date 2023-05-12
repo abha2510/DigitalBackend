@@ -13,7 +13,7 @@ cartRouter.post("/add", async (req, res) => {
     let cartItem = await CartModel(data);
     await cartItem.save();
     res.send({ msg: "Data saved successfully", sucess: 0 });
-  } catch (error) {
+  } catch (error) { 
     console.log(error.message);
     res.send({ msg: "Error saving", sucess: 1 });
   }

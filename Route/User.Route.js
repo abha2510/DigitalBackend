@@ -5,26 +5,26 @@ const bcrypt = require("bcrypt");
 
 userRouter.get("/", async (req, res) => {
   let user = await Usermodel.find();
-  res.send(user);
+  res.send(user); 
 });
 
 userRouter.post("/register", async (req, res) => {
-  const { name, password, email } = req.body;
+  const { name, password, email } = req.body; 
   try { 
     let isPresent = await Usermodel.find({email}); 
     if (name && password && email && isPresent.length==0) {
       bcrypt.hash(password, 7, async (err, hash_pass) => {
         if (err) {
           console.log(err); 
-        } else {
+        } else { 
           const user = new Usermodel({
             name,
             password: hash_pass,
             email,
-            uniqueId: Date.now(),
+            uniqueId: Date.now()
           });
           await user.save();
-          res.send({ message: "Register Successfull", success: 0 });
+          res.send({ message: "Register Successfull" ,success: 0 });
         }
       });
     } else {
@@ -47,7 +47,7 @@ userRouter.post("/login", async (req, res) => {
         if (result) {
           res.send({
             message: "User Logged in Successfull",
-            userId: data[0].uniqueId,
+            data: data[0],
             success: 0,
           });
         } else {
